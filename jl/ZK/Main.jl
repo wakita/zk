@@ -11,8 +11,14 @@ function parse_commandline()
 
   @add_arg_table s begin
     "--print-config"
-      help = "print configuration"
-      action = :store_true
+    help = "print configuration"
+    action = :store_true
+  end
+
+  @add_arg_table s begin
+    "--interact"
+    help = "Interactive mode; REPL runs"
+    action = :store_true
   end
 
   return parse_args(ARGS, s)
@@ -34,5 +40,4 @@ function main()
 
   load_notes()
   generate()
-
 end
