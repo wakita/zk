@@ -1,7 +1,7 @@
 module ZK
 
 using Pkg
-include("zk/Install.jl")
+include("zk/install.jl")
 
 using Printf
 
@@ -19,9 +19,9 @@ import YAML                 # https://github.com/JuliaData/YAML.jl
 
 SYSROOT = ENV["SYSROOT"]
 
-include("zk/Args.jl")
-include("zk/Config.jl")
-include("zk/Load.jl")
-include("zk/Generate.jl")
+include("zk/args.jl")
+include("zk/config.jl")
+include("zk/load.jl")
+include("zk/generate.jl")
 
 end
