@@ -1,4 +1,3 @@
-
 Notes = Dict{String,Dict{String,Any}}()
 
 Tags = Dict{String,Set{String}}()
@@ -11,14 +10,16 @@ function glob_md(path)
   filter(endswith(".md"), paths)
 end
 
-
 function load_notes()
+  UTC_DATE_TIME_FORMAT = "e u d H:M:S Z Y"
+  OUTPUT_DATE_TIME_FORMAT = "e u mm HH:MM yyyy"
+
   for md_path in  collect(flatten(map(glob_md, CONFIG["NOTEDIRS"])))
     note = YAML.load_file(md_path)
     note["md_path"] = md_path
     note["_created"] = astimezone(ZonedDateTime(replace(note["created"], r" +" => " "),
-                                                UTC_DATE_TIME_FORMAT), TZ)
-    note["created"] = Dates.format(note["_created"], "e u mm HH:MM yyyy")
+                                                          UTC_DATE_TIME_FORMAT), TZ)
+    note["created"] = Dates.format(note["_created"], OUTPUT_DATE_TIME_FORMAT)
     Notes[note["id"]] = note
 
     function bind(bag::Dict{String,Set{String}}, key::String)
@@ -37,3 +38,5 @@ function load_notes()
   delete!(Categories, "")
   delete!(Projects, "")
 end
+
+load_notes()

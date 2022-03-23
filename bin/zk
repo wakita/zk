@@ -1,30 +1,14 @@
 #!/bin/sh
 
-# A small script that combines /bin/bash and "julia" that sets up the
-# project directory structure.
-
 #= https://docs.julialang.org/en/v1/manual/faq/#man-scripting
 
 export SYSROOT=`realpath $0`; SYSROOT=`dirname $SYSROOT`; SYSROOT=`dirname $SYSROOT`  # (zk/)
-export JULIA_PROJECT=$SYSROOT/.project  # (zk/.project/)
-#exec julia --banner=no --startup-file=no -e 'include(popfirst!(ARGS))' "$0" "$@"
-exec julia --banner=no --startup-file=no "$0" "$@"
+exec julia -i --project=$SYSROOT/.project --banner=no --startup-file=no "$0" "$@"
 =#
 
-# Julia project and source directories (zk/jl/)
-SYSROOT = abspath(ENV["SYSROOT"])
-push!(LOAD_PATH, joinpath(SYSROOT, "jl"))
-
-# Python virtual environment settings (~/.venvs/zk/)
-# ENV["PYTHON"] = joinpath(homedir(), ".venv", "zk", "bin", "python3")
-# ENV["PYCALL_JL_RUNTIME_PYTHON"] = Sys.which("python3")
-
-# Python source directory (zk/py/)
-# ENV["PYTHONPATH"] = joinpath(SYSROOT, "py")
-# println(ENV["PYTHONPATH"])
+# Julia project and source directories (zk/src/)
+push!(LOAD_PATH, joinpath(ENV["SYSROOT"], "src"))
 
 # Load modules
 using Revise  # Automated source code reloading system
-
-using ZK     # Load all modules
-ZK.main()
+import ZK

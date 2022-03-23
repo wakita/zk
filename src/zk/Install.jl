@@ -1,5 +1,3 @@
-using Pkg
-
 # Install missing packages
 function install_packages()
   packages = setdiff(split("ArgParse JSON Revise TimeZones YAML OrderedCollections"),

@@ -1,7 +1,3 @@
-using Base.Filesystem
-using JSON
-using Printf
-
 """
     pandoc_note(md_path::String, meta_html::String, html_path::String)
 
@@ -14,7 +10,7 @@ See also [`pandoc_notes`](@ref).
 """
 function pandoc_note(md_path, meta_html, html_path)
   C = CONFIG
-  #NOTE_TEMPLATE = joinpath(C["SYSROOT"], C["NOTE_TEMPLATE"])
+  #NOTE_TEMPLATE = joinpath(SYSROOT, C["NOTE_TEMPLATE"])
 
   cmdline = ["pandoc", "--from", C["DEFAULT_PANDOC_EXTENSIONS"], "--template", C["NOTE_TEMPLATE"], "--standalone",
              "--output", html_path, md_path]
@@ -84,7 +80,6 @@ function pandoc_indices()
   # index.html
   md_path = joinpath(Meta, "index.md")
   html_path = joinpath(Site, "index.html")
-  println("$md_path, $html_path")
   pandoc_index(md_path, html_path, "Index", keys(Notes))
 
   # collections
@@ -101,3 +96,5 @@ function generate()
   pandoc_notes(collect(keys(Notes)))
   pandoc_indices()
 end
+
+generate()

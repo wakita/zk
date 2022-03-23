@@ -1,6 +1,3 @@
-using YAML, OrderedCollections
-using TimeZones
-
 # Load the configuration,
 # - replacing occurrences of environment variable names with their values
 const CONFIG = try
@@ -13,7 +10,7 @@ end
 
 # SYSTEM SECTION
 const TZ = TimeZones.TimeZone(CONFIG["TIME_ZONE"])
-const LIBDIR = joinpath(CONFIG["SYSROOT"], "etc")
+const LIBDIR = joinpath(SYSROOT, "etc")
 
 for key in split("NOTE_TEMPLATE INDEX_TEMPLATE")
   CONFIG[key] = joinpath(LIBDIR, CONFIG[key])
