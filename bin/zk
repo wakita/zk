@@ -3,7 +3,7 @@
 #= https://docs.julialang.org/en/v1/manual/faq/#man-scripting
 
 export SYSROOT=`realpath $0`; SYSROOT=`dirname $SYSROOT`; SYSROOT=`dirname $SYSROOT`  # (zk/)
-exec julia -i --project=$SYSROOT/.project --banner=no --startup-file=no "$0" "$@"
+exec julia -i --project=$SYSROOT --banner=no --startup-file=no "$0" "$@"
 =#
 
 # Julia project and source directories (zk/src/)

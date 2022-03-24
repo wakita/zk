@@ -1,0 +1,40 @@
+#  SYSTEM SECTION
+
+TIME_ZONE: Asia/Tokyo
+
+##    Paths to Templates Used for HTML Generation Relative to $SYSROOT/lib
+###     Pandoc templates
+NOTE_TEMPLATE:  templates/note_template.html
+INDEX_TEMPLATE: templates/index_template.html
+###     Included verbose in the generated HTML pages.  You may add your own template(s)
+NOTE_HTML:
+  - templates/note_script.html
+INDEX_HTML:
+  - templates/index_script.html
+
+##    Pandoc Settings: the Pandoc input format, follwoed by an optional list of extensions
+DEFAULT_PANDOC_EXTENSIONS:
+  - markdown
+  - fenced_divs
+  - footnotes
+
+
+#  NOTES SECTION
+DOCROOT: .                             # Path to the notes directories
+NOTEDIRS:
+  - misc
+  - notes
+  - research
+  - tech
+
+
+#  SITE SECTION
+SITE:    $HOME/Sites/zk                # Web contents directory
+BASEURL: /zk                           # The subpath of your site (e.g., /zk)
+
+##    Paths to CSS Style Files Relative to $BASEURL
+NOTE_CSS:
+  - lib/styles/note.css
+INDEX_CSS:
+  - lib/styles/note.css
+  - lib/styles/index.css

@@ -1,6 +1,5 @@
 module ZK
 
-using Pkg
 include("zk/install.jl")
 
 using Printf

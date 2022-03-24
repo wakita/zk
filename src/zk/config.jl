@@ -1,7 +1,7 @@
 # Load the configuration,
 # - replacing occurrences of environment variable names with their values
 const CONFIG = try
-  YAML.load(replace(YAML.yaml(YAML.load_file("_config.yml"; dicttype=OrderedDict{String,Any})),
+  YAML.load(replace(YAML.yaml(YAML.load_file("lib/config.yml"; dicttype=OrderedDict{String,Any})),
                     r"\$[A-Z]+" => (x -> ENV[x[2:end]]));
             dicttype=OrderedDict{String,Any})
 catch
@@ -10,7 +10,7 @@ end
 
 # SYSTEM SECTION
 const TZ = TimeZones.TimeZone(CONFIG["TIME_ZONE"])
-const LIBDIR = joinpath(SYSROOT, "etc")
+const LIBDIR = joinpath(SYSROOT, "lib")
 
 for key in split("NOTE_TEMPLATE INDEX_TEMPLATE")
   CONFIG[key] = joinpath(LIBDIR, CONFIG[key])
