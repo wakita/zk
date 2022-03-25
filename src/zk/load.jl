@@ -11,7 +11,7 @@ function glob_md(path)
 end
 
 function load_notes()
-  UTC_DATE_TIME_FORMAT = "e u d H:M:S Z Y"
+  UTC_DATE_TIME_FORMAT    = "e u d H:M:S Z Y"
   OUTPUT_DATE_TIME_FORMAT = "e u mm HH:MM yyyy"
 
   for md_path in  collect(flatten(map(glob_md, CONFIG["NOTEDIRS"])))
@@ -37,6 +37,13 @@ function load_notes()
 
   delete!(Categories, "")
   delete!(Projects, "")
+end
+
+function load_notes!()
+  for collection in [Notes, Tags, Categories, Projects]
+    empty!(collection)
+  end
+  load_notes()
 end
 
 load_notes()

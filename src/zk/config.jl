@@ -27,6 +27,7 @@ CONFIG["DEFAULT_PANDOC_EXTENSIONS"] = join(CONFIG["DEFAULT_PANDOC_EXTENSIONS"], 
 CONFIG["DOCROOT"] = abspath(CONFIG["DOCROOT"])
 CONFIG["NOTEDIRS"] = map(path -> joinpath(CONFIG["DOCROOT"], path), CONFIG["NOTEDIRS"])
 mkpath(joinpath(CONFIG["DOCROOT"], ".meta"))
+mkpath(joinpath(CONFIG["SITE"], ".meta"))
 
 
 # SITE SECTION

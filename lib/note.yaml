@@ -1,0 +1,7 @@
+from: markdown+fenced_divs+footnotes
+to: html
+standalone: true
+template: lib/templates/note.html
+css:
+  - /zk/lib/styles/note.css
+highlight-style: pygments

@@ -1,53 +1,21 @@
 """
-    pandoc_note(md_path::String, meta_html::String, html_path::String)
-
-Pandocを用いてZettelkastenノート (`md_path`で指定) からHTMLページ (`html_path`で指定) を生成する。
-
-# Arguments
-- `meta_html`: ノートのメタ情報を抽出したJavaScriptのファイルへのパス。
-
-See also [`pandoc_notes`](@ref).
-"""
-function pandoc_note(md_path, meta_html, html_path)
-  C = CONFIG
-  #NOTE_TEMPLATE = joinpath(SYSROOT, C["NOTE_TEMPLATE"])
-
-  cmdline = ["pandoc", "--from", C["DEFAULT_PANDOC_EXTENSIONS"], "--template", C["NOTE_TEMPLATE"], "--standalone",
-             "--output", html_path, md_path]
-  append!(cmdline, map(css -> "--css=$(css)", C["NOTE_CSS"]))
-  push!(cmdline, "--include-before-body=$meta_html")
-  append!(cmdline, map(html -> "--include-before-body=$(html)", C["NOTE_HTML"]))
-  #println(join(cmdline, " "))
-  run(Cmd(cmdline))
-end
-
-
-"""
     pandoc_notes(ids)
 
 与えられたID群で指定されたノートのHTMLページ群を生成する。
-
-See also [`pandoc_note`](@ref).
 """
 function pandoc_notes(ids::Array{String})
   for id in ids                        # ノートのメタ情報を JavaScript のファイルとして生成
-    meta_html = joinpath(CONFIG["DOCROOT"], ".meta", "$id.html")
-    open(meta_html, "w") do html
-      write(html, "<script type=\"text/javascript\">\nconst NOTE = ")
-      JSON.print(html, Notes[id])
-      write(html, ";\n</script>\n")
+    meta_js = 
+    open(joinpath(CONFIG["SITE"], ".meta", "$id.js"), "w") do js
+      write(js, "const NOTE = ")
+      JSON.print(js, Notes[id])
+      write(js, ";\n")
     end
 
-    pandoc_note(Notes[id]["md_path"], meta_html, joinpath(CONFIG["SITE"], "notes", "$id.html"))
+  run(Cmd(["pandoc", "--defaults=lib/note.yaml",
+           "--output", joinpath(CONFIG["SITE"], "notes", "$id.html"),
+           Notes[id]["md_path"]]))
   end
-end
-
-function pandoc_index(md_path, html_path)
-  cmdline = ["pandoc", "--from", CONFIG["DEFAULT_PANDOC_EXTENSIONS"], "--template", CONFIG["INDEX_TEMPLATE"], "--standalone",
-             "--output", html_path, md_path]
-  append!(cmdline, map(css -> "--css=$css", CONFIG["INDEX_CSS"]))
-  append!(cmdline, map(html -> "--include-before-body=$html", CONFIG["INDEX_HTML"]))
-  run(Cmd(cmdline))
 end
 
 function pandoc_index(md_path, html_path, title, note_ids)
@@ -70,10 +38,8 @@ title: $title
     end
     write(md, ":::\n")
   end
-  pandoc_index(md_path, html_path)
+  run(Cmd(["pandoc", "--defaults=lib/index.yaml", "--output", html_path, md_path]))
 end
-
-s = "わたしの名前は中野です。"
 
 function pandoc_indices()
   Meta, Site = joinpath(CONFIG["DOCROOT"], ".meta"), CONFIG["SITE"]
@@ -87,7 +53,7 @@ function pandoc_indices()
     for (key, ids) in collection
       md_path = joinpath(Meta, "$name-$key.md")
       html_path = joinpath(Site, name, "$key.html")
-      pandoc_index(md_path, html_path, key, ids)
+      pandoc_index(md_path, html_path, "$name-$key", ids)
     end
   end
 end
